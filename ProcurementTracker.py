@@ -1,4 +1,6 @@
 
+filename=r'E:\Software Engineering\git_repo\ProcurementTracker\ProcurementTracker_record.txt'
+
 def main():
     while True:
         menu()
@@ -38,8 +40,42 @@ def menu():
     print('0. Exit the system')
 
 def insert():
-    pass
+    item_list=[]
+    while True:
+        item_id=input('Please enter item id:')
+        if not item_id:
+            break
+        item_name=input('Please enter item name:')
+        if not item_name:
+            break
+        try:
+            desc=input('Please enter item description:')
+            unit_price=float(input('Please enter the unit price of the item:'))
+            qty=int(input('Please enter how many you purchase:'))
+            vendor=input('Please enter vendor name of the Item:')
+            wp=input('Please enter the warranty period of the item(eg. 20250107-20251231)')
 
+        except:
+            print('Your input is not correct, Please enter the correct format')
+        item={'item_id':item_id, 'item_name':item_name, 'desc':desc, 'unit_price':unit_price,'qty':qty,'vendor':vendor,'wp':wp}
+        item_list.append(item)
+        answer = input('Do you really want to continue(y/n):')
+        if answer =='y':
+            continue
+        else:
+            save(item_list)
+            break
+
+def save(lst):
+    try:
+        f=open(filename,'a',encoding='utf-8')
+    except:
+        f=open(filename,'w',encoding='utf-8')
+    
+    for i in lst:
+        f.write(str(i)+'\n')
+    f.close
+       
 def delete():
     pass
 
