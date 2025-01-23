@@ -1,3 +1,4 @@
+import os
 
 filename=r'E:\Software Engineering\git_repo\ProcurementTracker\ProcurementTracker_record.txt'
 
@@ -63,8 +64,8 @@ def insert():
         if answer =='y':
             continue
         else:
-            save(item_list)
             break
+    save(item_list)
 
 def save(lst):
     try:
@@ -77,8 +78,42 @@ def save(lst):
     f.close
        
 def delete():
-    pass
+    while True:
+        id=input('Please enter the item id you want to delete:')
+        if id != "":
+            if os.path.exists(filename):
+                with open(filename,'r',encoding='utf-8') as rfile:
+                    item_old=rfile.readlines()
+            else:
+                item_old=[]
+            flag= False
 
+            if item_old:
+                d={}
+                with open(filename,'w',encoding='utf-8') as wfile:
+                    for item in item_old:
+                        d=dict(eval(item))
+                        if d['item_id'] != id:
+                            wfile.write(str(item)+'\n')
+                        else:
+                            flag=True
+                    if flag == True:
+                        print('Procurement item has been deleted successfully')
+                        answer=input('Do you want to continue,y/n:')
+                        if answer == 'y':
+                            continue
+                        else:
+                            break
+                    else:
+                        print('Did not find the item')
+            else:
+                print('No item stored!')
+    
+    show_item()
+
+def show_item():
+    pass            
+            
 def modify():
     pass
 
