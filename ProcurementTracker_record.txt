@@ -1,2 +1,0 @@
-{'item_id': '1', 'item_name': 'vsphere license', 'desc': 'vsphere', 'unit_price': 12000.0, 'qty': 96, 'vendor': 'CT', 'wp': '20250107-20290105'}
-

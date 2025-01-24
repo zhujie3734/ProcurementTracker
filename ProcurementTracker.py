@@ -115,7 +115,39 @@ def show_item():
     pass            
             
 def modify():
-    pass
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as rfile:
+            item_old = rfile.readlines()
+    else:
+        return
+     
+    id=input('Please enter item id')
+    with open(filename,'w',encoding='utf-8') as wfile:
+                
+        for item in item_old:
+            d=dict(eval(item))
+            if d['item_id'] != id:
+                wfile.write(str(d)+'\n')
+            else:
+                while True:
+                    try:
+                        d['item_name']=input('Please enter the item name')
+                        d['desc']=input('Please enter item description:')
+                        d['unit_price']=float(input('Please enter the unit price of the item:'))
+                        d['qty']=int(input('Please enter how many you purchase:'))
+                        d['vendor']=input('Please enter vendor name of the Item:')
+                        d['wp']=input('Please enter the warranty period of the item(eg. 20250107-20251231)')
+
+                    except:
+                        print('Your input is not correct, Please enter the correct format')
+                
+                    wfile.write(str(d)+'\n')   
+        
+        answer=input('do you want to continue(y/n):')
+        if answer =='y':
+            modify()
+        else:
+            return
 
 def Search():
     pass
