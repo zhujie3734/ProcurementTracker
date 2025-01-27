@@ -1,0 +1,2 @@
+{'item_id': 'vsphere', 'item_name': 'vshpere', 'desc': 'license', 'unit_price': 300.0, 'qty': 5, 'vendor': 'cmi', 'wp': '20250107-20251225'}
+{'item_id': '1', 'item_name': 'vshphere1', 'desc': 'license1', 'unit_price': 500.0, 'qty': 3, 'vendor': 'ct', 'wp': '20250108'}

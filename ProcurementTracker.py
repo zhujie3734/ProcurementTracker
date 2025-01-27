@@ -111,10 +111,25 @@ def delete():
     
     show_item()
 
-def show_item():
-    pass            
+def show_item(lst):
+    if len(lst) == 0:
+        print('cannot find item info')
+        return
+    format_title='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^6}\t{:^6}\t{:^6}\t'
+    print(format_title.format('item_id','item_name','desc','unit_price','qty','vendor','wp'))
+
+    format_data='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^6}\t{:^6}\t{:^6}\t'
+    for item in lst:
+        print(format_data.format(item.get('item_id'),
+                                 item.get('item_name'),
+                                 item.get('desc'),
+                                 item.get('unit_price'),
+                                 item.get('qty'),
+                                 item.get('vendor'),
+                                 item.get('wp')))
             
 def modify():
+    show()
     if os.path.exists(filename):
         with open(filename,'r',encoding='utf-8') as rfile:
             item_old = rfile.readlines()
@@ -140,14 +155,14 @@ def modify():
 
                     except:
                         print('Your input is not correct, Please enter the correct format')
+                    else:
+                        break
                 
-                    wfile.write(str(d)+'\n')   
+                wfile.write(str(d)+'\n')   
         
         answer=input('do you want to continue(y/n):')
         if answer =='y':
             modify()
-        else:
-            return
 
 def Search():
     pass
