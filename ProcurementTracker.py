@@ -115,18 +115,19 @@ def show_item(lst):
     if len(lst) == 0:
         print('cannot find item info')
         return
-    format_title='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^6}\t{:^6}\t{:^6}\t'
-    print(format_title.format('item_id','item_name','desc','unit_price','qty','vendor','wp'))
+    format_title='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^18}\t{:^12}\t{:^3}\t{:^6}\t'
+    print(format_title.format('item_id','item_name','desc','vendor','wp','unit_price','qty','total'))
 
-    format_data='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^6}\t{:^6}\t{:^6}\t'
+    format_data='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^18}\t{:^12}\t{:^3}\t{:^6}\t'
     for item in lst:
         print(format_data.format(item.get('item_id'),
                                  item.get('item_name'),
                                  item.get('desc'),
+                                 item.get('vendor'),
+                                 item.get('wp'),
                                  item.get('unit_price'),
                                  item.get('qty'),
-                                 item.get('vendor'),
-                                 item.get('wp')))
+                                 int(item.get('unit_price')*int(item.get('qty')))))
             
 def modify():
     show()
@@ -164,11 +165,52 @@ def modify():
         if answer =='y':
             modify()
 
-def Search():
-    pass
+def search():
+    new_item=[]
+    while True:
+        id=''
+        name=''
+        if os.path.exists(filename):
+            mode=input('Please enter how to search item 1:id 2:name:')
+            if mode == '1':
+                id=input('Please input item id:')
+            elif mode == '2':
+                name=input('Please input item name:')
+            else:
+                print('type the wrong mode')
+                search()
+            with open(filename,'r',encoding='utf-8') as rfile:
+                item_old=rfile.readlines()
+
+                for item in item_old:
+                    d=dict(eval(item))
+                    if id == d['item_id']:
+                        new_item.append(d)
+                    elif name == d['item_name']:
+                        new_item.append(d)
+            
+            show_item(new_item)
+            new_item.clear()
+            answer=input('Do you want to continue y/n:')
+            if answer == 'y':
+                search()
+            else:
+                break
+        else:
+            print('Do not have item info')
 
 def show():
-    pass
+    new_item=[]
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as rfile:
+            item_old=rfile.readlines()
+            for item in item_old:
+                d=dict(eval(item))
+                new_item.append(d)
+            show_item(new_item) 
+    else:
+        print('No item info stored')
+
 
 def sort():
     pass
