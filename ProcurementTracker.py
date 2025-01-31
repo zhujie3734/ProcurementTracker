@@ -213,8 +213,33 @@ def show():
 
 
 def sort():
-    pass
+    new_item=[]
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as rfile:
+            old_item=rfile.readlines()
 
+            for item in old_item:
+                d=dict(eval(item))
+                new_item.append(d)
+            
+    sort_mode=input('Please input sort type: 0 as asc 1 as des:')
+    if sort_mode == '0':
+        sort_bool=False
+    elif sort_mode == '1':
+        sort_bool=True
+    else:
+        print('You type in the wrong choose')
+        sort()
+
+    mode=input('Please input how to sort the item: 1: sort by unit price  2: sort by qty')
+    if mode == '1':
+        new_item.sort(key=lambda x:int(x['unit_price']),reverse=sort_bool)
+    elif mode == '2':
+        new_item.sort(key=lambda x:int(x['qty']),reverse=sort_bool)
+    else:
+        print('You type in the wrong number')
+        sort()
+    show_item(new_item)
 
 if __name__ == "__main__":
     main()
