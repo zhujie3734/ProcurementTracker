@@ -1,12 +1,13 @@
-import os
+import os,re
 
 filename=r'E:\Software Engineering\git_repo\ProcurementTracker\ProcurementTracker_record.txt'
+itemfile=r'E:\Software Engineering\git_repo\ProcurementTracker\dist\collect_item.txt'
 
 def main():
     while True:
         menu()
         choice=int(input('Please enter the function number:'))
-        if choice in [0,1,2,3,4,5,6]:
+        if choice in [0,1,2,3,4,5,6,7]:
             if choice == 0:
                 answer = input('Do you really want to exit the system(y/n):')
                 if answer == 'y':
@@ -25,6 +26,8 @@ def main():
                 search()
             elif choice == 6:
                 sort()
+            elif choice == 7:
+                bulk_import()
         else:
             print('You type in the wrong input, Please enter again among 1-7')
             continue
@@ -38,6 +41,7 @@ def menu():
     print('4. Display All the Items')
     print('5. Search Procurement Item')
     print('6. Sort Procurement Item')
+    print('7. Bulk import Procurement Item')
     print('0. Exit the system')
 
 def insert():
@@ -240,6 +244,26 @@ def sort():
         print('You type in the wrong number')
         sort()
     show_item(new_item)
+
+def bulk_import(itemfile):
+    item_list=[]
+    if os.path.exists(itemfile):
+        with open(itemfile,'r',encoding='utf-8') as rfile:
+            item_old=rfile.readlines()
+            
+            d={}
+            for item in item_old:
+                for field in re.split(r'\s*,\s*',item.strip()):
+                    d['item_id']=field[0].strip()
+                    d['item_name']=field[1].strip()
+                    d['desc']=field[2].strip()
+                    d['unit_price']=field[3].strip()
+                    d['qty']=field[4].strip()
+                    d['vendor']=field[5].strip()
+                    d['wp']=field[6].strip()
+                item_list.append(d)
+            save(item_list)
+            print('File import successfully')
 
 if __name__ == "__main__":
     main()
