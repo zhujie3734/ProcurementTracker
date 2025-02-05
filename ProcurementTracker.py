@@ -1,7 +1,22 @@
-import os,re
+import os,re,sys
+import argparse
 
-filename=r'E:\Software Engineering\git_repo\ProcurementTracker\ProcurementTracker_record.txt'
-itemfile=r'E:\Software Engineering\git_repo\ProcurementTracker\dist\collect_item.txt'
+while True:
+    path = input("请输入要设置为工作目录的路径 (输入 'exit' 退出):")
+
+    if path.lower() == 'exit':
+        break
+
+    if os.path.isdir(path):
+        record_name='procurement_item.txt'
+        data_name='collect_item.txt'
+        filename=os.path.join(path,record_name)
+        bulkdata=os.path.join(path,data_name)
+
+        break
+    else:
+        print("❌ 无效的目录路径，请重新输入。")
+
 
 def main():
     while True:
@@ -27,7 +42,7 @@ def main():
             elif choice == 6:
                 sort()
             elif choice == 7:
-                bulk_import()
+                bulk_import(bulkdata)
         else:
             print('You type in the wrong input, Please enter again among 1-7')
             continue
@@ -119,10 +134,10 @@ def show_item(lst):
     if len(lst) == 0:
         print('cannot find item info')
         return
-    format_title='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^18}\t{:^12}\t{:^3}\t{:^6}\t'
+    format_title='{:^6}\t{:^20}\t{:^40}\t{:^6}\t{:^18}\t{:^12}\t{:^3}\t{:^6}\t'
     print(format_title.format('item_id','item_name','desc','vendor','wp','unit_price','qty','total'))
 
-    format_data='{:^6}\t{:^12}\t{:^8}\t{:^8}\t{:^18}\t{:^12}\t{:^3}\t{:^6}\t'
+    format_data='{:^6}\t{:^20}\t{:^40}\t{:^6}\t{:^18}\t{:^12}\t{:^3}\t{:^6.2f}\t'
     for item in lst:
         print(format_data.format(item.get('item_id'),
                                  item.get('item_name'),
@@ -131,7 +146,7 @@ def show_item(lst):
                                  item.get('wp'),
                                  item.get('unit_price'),
                                  item.get('qty'),
-                                 int(item.get('unit_price')*int(item.get('qty')))))
+                                 float(item.get('unit_price'))*int(item.get('qty'))))
             
 def modify():
     show()
@@ -190,7 +205,7 @@ def search():
                     d=dict(eval(item))
                     if id == d['item_id']:
                         new_item.append(d)
-                    elif name == d['item_name']:
+                    elif name in d['item_name']:
                         new_item.append(d)
             
             show_item(new_item)
@@ -235,9 +250,9 @@ def sort():
         print('You type in the wrong choose')
         sort()
 
-    mode=input('Please input how to sort the item: 1: sort by unit price  2: sort by qty')
+    mode=input('Please input how to sort the item: 1: sort by unit price  2: sort by qty:')
     if mode == '1':
-        new_item.sort(key=lambda x:int(x['unit_price']),reverse=sort_bool)
+        new_item.sort(key=lambda x:float(x['unit_price']),reverse=sort_bool)
     elif mode == '2':
         new_item.sort(key=lambda x:int(x['qty']),reverse=sort_bool)
     else:
@@ -245,25 +260,28 @@ def sort():
         sort()
     show_item(new_item)
 
-def bulk_import(itemfile):
+def bulk_import(bulkdata):
     item_list=[]
-    if os.path.exists(itemfile):
-        with open(itemfile,'r',encoding='utf-8') as rfile:
-            item_old=rfile.readlines()
-            
-            d={}
-            for item in item_old:
-                for field in re.split(r'\s*,\s*',item.strip()):
-                    d['item_id']=field[0].strip()
-                    d['item_name']=field[1].strip()
-                    d['desc']=field[2].strip()
-                    d['unit_price']=field[3].strip()
-                    d['qty']=field[4].strip()
-                    d['vendor']=field[5].strip()
-                    d['wp']=field[6].strip()
+    if os.path.exists(bulkdata):
+        with open(bulkdata,'r',encoding='utf-8',errors='ignore') as rfile:
+            file_old=rfile.readlines()
+
+            for item in file_old:
+                field=re.split(r'\s*,\s*',item.strip())
+                d={
+                    'item_id': field[0].strip(),
+                    'item_name': field[1].strip(),
+                    'desc': field[2].strip(),
+                    'unit_price': field[3].strip(),
+                    'qty': field[4].strip(),
+                    'vendor': field[5].strip(),
+                    'wp': field[6].strip()
+                }
                 item_list.append(d)
-            save(item_list)
-            print('File import successfully')
+        
+        save(item_list)
+    else:
+        print('file not exist')
 
 if __name__ == "__main__":
     main()
