@@ -1,5 +1,4 @@
 import os,re,sys
-import argparse
 
 while True:
     path = input("请输入要设置为工作目录的路径 (输入 'exit' 退出):")
@@ -48,8 +47,8 @@ def main():
             continue
 
 def menu():
-    print('◆◆◆◆ Procurement Tracker ◆◆◆◆')
-    print('◆◆◆◆     Menu         ◆◆◆◆')
+    print('##### Procurement Tracker #####')
+    print('#####        Menu         #####')
     print('1. Insert Procurement Item')
     print('2. Delete Procurement Item')
     print('3. Modify Procurement Item')
@@ -101,7 +100,7 @@ def delete():
         id=input('Please enter the item id you want to delete:')
         if id != "":
             if os.path.exists(filename):
-                with open(filename,'r',encoding='utf-8') as rfile:
+                with open(filename,'r',encoding='utf-8-sig') as rfile:
                     item_old=rfile.readlines()
             else:
                 item_old=[]
@@ -151,7 +150,7 @@ def show_item(lst):
 def modify():
     show()
     if os.path.exists(filename):
-        with open(filename,'r',encoding='utf-8') as rfile:
+        with open(filename,'r',encoding='utf-8-sig') as rfile:
             item_old = rfile.readlines()
     else:
         return
@@ -166,12 +165,12 @@ def modify():
             else:
                 while True:
                     try:
-                        d['item_name']=input('Please enter the item name')
+                        d['item_name']=input('Please enter the item name:')
                         d['desc']=input('Please enter item description:')
                         d['unit_price']=float(input('Please enter the unit price of the item:'))
                         d['qty']=int(input('Please enter how many you purchase:'))
                         d['vendor']=input('Please enter vendor name of the Item:')
-                        d['wp']=input('Please enter the warranty period of the item(eg. 20250107-20251231)')
+                        d['wp']=input('Please enter the warranty period of the item(eg. 20250107-20251231):')
 
                     except:
                         print('Your input is not correct, Please enter the correct format')
@@ -194,7 +193,7 @@ def search():
             if mode == '1':
                 id=input('Please input item id:')
             elif mode == '2':
-                name=input('Please input item name:')
+                name=input('Please input item name:').lower()
             else:
                 print('type the wrong mode')
                 search()
@@ -205,7 +204,7 @@ def search():
                     d=dict(eval(item))
                     if id == d['item_id']:
                         new_item.append(d)
-                    elif name in d['item_name']:
+                    elif name in d['item_name'].lower():
                         new_item.append(d)
             
             show_item(new_item)
