@@ -250,11 +250,13 @@ def sort():
         print('You type in the wrong choose')
         sort()
 
-    mode=input('Please input how to sort the item: 1: sort by unit price  2: sort by qty:')
+    mode=input('Please input how to sort the item: 1: sort by unit price  2: sort by qty, 3:sort by name:')
     if mode == '1':
         new_item.sort(key=lambda x:float(x['unit_price']),reverse=sort_bool)
     elif mode == '2':
         new_item.sort(key=lambda x:int(x['qty']),reverse=sort_bool)
+    elif mode == '3':
+        new_item.sort(key=lambda x:x['item_name'],reverse=sort_bool)
     else:
         print('You type in the wrong number')
         sort()
