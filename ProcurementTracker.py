@@ -197,7 +197,7 @@ def search():
             else:
                 print('type the wrong mode')
                 search()
-            with open(filename,'r',encoding='utf-8') as rfile:
+            with open(filename,'r',encoding='utf-8-sig') as rfile:
                 item_old=rfile.readlines()
 
                 for item in item_old:
@@ -211,7 +211,7 @@ def search():
             new_item.clear()
             answer=input('Do you want to continue y/n:')
             if answer == 'y':
-                search()
+                continue
             else:
                 break
         else:
@@ -220,7 +220,7 @@ def search():
 def show():
     new_item=[]
     if os.path.exists(filename):
-        with open(filename,'r',encoding='utf-8') as rfile:
+        with open(filename,'r',encoding='utf-8-sig') as rfile:
             item_old=rfile.readlines()
             for item in item_old:
                 d=dict(eval(item))
@@ -233,7 +233,7 @@ def show():
 def sort():
     new_item=[]
     if os.path.exists(filename):
-        with open(filename,'r',encoding='utf-8') as rfile:
+        with open(filename,'r',encoding='utf-8-sig') as rfile:
             old_item=rfile.readlines()
 
             for item in old_item:
@@ -264,7 +264,7 @@ def sort():
 def bulk_import(bulkdata):
     item_list=[]
     if os.path.exists(bulkdata):
-        with open(bulkdata,'r',encoding='utf-8',errors='ignore') as rfile:
+        with open(bulkdata,'r',encoding='utf-8-sig',errors='ignore') as rfile:
             file_old=rfile.readlines()
 
             for item in file_old:
