@@ -155,7 +155,7 @@ def modify():
     else:
         return
      
-    id=input('Please enter item id')
+    id=input('Please enter item id:')
     with open(filename,'w',encoding='utf-8') as wfile:
                 
         for item in item_old:
@@ -184,7 +184,7 @@ def modify():
             modify()
 
 def search():
-    new_item=[]
+    new_list=[]
     while True:
         id=''
         name=''
@@ -196,24 +196,29 @@ def search():
                 name=input('Please input item name:').lower()
             else:
                 print('type the wrong mode')
-                search()
+                break
             with open(filename,'r',encoding='utf-8-sig') as rfile:
                 item_old=rfile.readlines()
 
-                for item in item_old:
+                for item in item_old:    #empty string will always return true in "in condition"
                     d=dict(eval(item))
-                    if id == d['item_id']:
-                        new_item.append(d)
-                    elif name in d['item_name'].lower():
-                        new_item.append(d)
-            
-            show_item(new_item)
-            new_item.clear()
-            answer=input('Do you want to continue y/n:')
-            if answer == 'y':
-                continue
+                    if id and str(d['item_id']) == str(id):    #check id and name empty value to avoid empty input to return everything
+                        new_list.append(d)
+
+                    elif name and name in d['item_name'].lower():  #if condition doesn't match, empty name will always be true causing return every item
+                        new_list.append(d)
+
+
+            if new_list:
+                show_item(new_list)
+                new_list.clear()
+                answer=input('Do you want to continue y/n:')
+                if answer == 'y':
+                    continue
+                else:
+                    break
             else:
-                break
+                print('No match found')
         else:
             print('Do not have item info')
 
@@ -249,13 +254,15 @@ def sort():
         print('You type in the wrong choose')
         sort()
 
-    mode=input('Please input how to sort the item: 1: sort by unit price  2: sort by qty, 3:sort by name:')
+    mode=input('Please input how to sort the item: 1: sort by unit price, 2: sort by qty, 3:sort by name, 4 sort by vendor:')
     if mode == '1':
         new_item.sort(key=lambda x:float(x['unit_price']),reverse=sort_bool)
     elif mode == '2':
         new_item.sort(key=lambda x:int(x['qty']),reverse=sort_bool)
     elif mode == '3':
         new_item.sort(key=lambda x:x['item_name'],reverse=sort_bool)
+    elif mode == '4':
+        new_item.sort(key=lambda x:x['vendor'],reverse=sort_bool)
     else:
         print('You type in the wrong number')
         sort()
