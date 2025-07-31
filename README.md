@@ -29,4 +29,3 @@ To ensure transparency, traceability, and consistency in managing procurement da
 3. **Update as needed**  
    If prices change or items are returned, update the entry to reflect accurate information.
 =======
-# Record all the Procurement information in the tools to track the item and price
