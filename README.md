@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Procurement Tracking
 
 This tool is used to record and track all procurement-related information, including items and their corresponding prices.
